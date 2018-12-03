@@ -2,7 +2,5 @@ from Map import *
 
 map = Map()
 
-game = True
-
-while game:
+while map.get_game():
     map.move_player(input("Où souhaitez vous aller ?"))

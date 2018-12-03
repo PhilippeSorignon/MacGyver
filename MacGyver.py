@@ -13,7 +13,8 @@ class MacGyver(Objects):
 
 
     def is_bag_full(self):
-        pass
+        return self.bag[2] != ""
+
 
     def pick_item(self, item):
         for i in range(0, 3):

@@ -5,6 +5,7 @@ from MacGyver import *
 class Map:
     def __init__(self):
         self.map = []
+        self.game = True
         map_file = open("map.txt", "r")
         lines = map_file.readlines()
 
@@ -21,9 +22,11 @@ class Map:
         needle = self.select_random_empty_sprite()
         tube = self.select_random_empty_sprite()
         ether = self.select_random_empty_sprite()
+        guard = self.select_random_empty_sprite()
         self.move_sprite("n", needle, needle)
         self.move_sprite("t", tube, tube)
         self.move_sprite("e", ether, ether)
+        self.move_sprite("G", guard, guard)
 
         map_file.close()
 
@@ -35,6 +38,9 @@ class Map:
             for column in range(0, 15):
                 line_tab += self.map[line][column]
             print(line_tab)
+
+    def get_game(self):
+        return self.game
 
     def is_empty(self, line, column):
         return self.map[line][column] != "x"
@@ -72,12 +78,20 @@ class Map:
             self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0], pos[1] - 1])
             self.mac.move([pos[0], pos[1] - 1])
 
-        self.display()
-        print(self.mac.show_bag())
+        if self.game:
+            self.display()
+            print(self.mac.show_bag())
 
     def verify_object(self, position):
         if self.map[position[0]][position[1]] != " " and self.map[position[0]][position[1]] != "x":
-            self.mac.pick_item(self.map[position[0]][position[1]])
+            if self.map[position[0]][position[1]] != "G":
+                self.mac.pick_item(self.map[position[0]][position[1]])
+            else:
+                if self.mac.is_bag_full():
+                    print("Gagné !")
+                else:
+                    print("Perdu :(")
+                self.game = False
 
     def move_sprite(self, name, before, after):
         self.map[before[0]][before[1]] = " "
