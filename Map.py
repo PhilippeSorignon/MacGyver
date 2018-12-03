@@ -17,6 +17,14 @@ class Map:
         self.mac = MacGyver("M", self.select_random_empty_sprite())
         self.move_sprite(self.mac.get_name(), self.mac.get_position(), self.mac.get_position())
 
+        # self.needle = Objects("n", self.select_random_empty_sprite())
+        needle = self.select_random_empty_sprite()
+        tube = self.select_random_empty_sprite()
+        ether = self.select_random_empty_sprite()
+        self.move_sprite("n", needle, needle)
+        self.move_sprite("t", tube, tube)
+        self.move_sprite("e", ether, ether)
+
         map_file.close()
 
         self.display()
@@ -43,26 +51,33 @@ class Map:
 
     def move_player(self, direction):
         pos = self.mac.get_position()
-        pos2 = [0, 0]
 
         if direction == "n" and pos[0] - 1 >= 0 and self.is_empty(pos[0] - 1, pos[1]):
+            self.verify_object([pos[0] - 1, pos[1]])
             self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] - 1, pos[1]])
             self.mac.move([pos[0] - 1, pos[1]])
 
         elif direction == "s" and pos[0] + 1 >= 0 and self.is_empty(pos[0] + 1, pos[1]):
+            self.verify_object([pos[0] + 1, pos[1]])
             self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] + 1, pos[1]])
             self.mac.move([pos[0] + 1, pos[1]])
 
         elif direction == "e" and pos[1] + 1 >= 0 and self.is_empty(pos[0], pos[1] + 1):
+            self.verify_object([pos[0], pos[1] + 1])
             self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0], pos[1] + 1])
             self.mac.move([pos[0], pos[1] + 1])
 
         elif direction == "o" and pos[1] - 1 >= 0 and self.is_empty(pos[0], pos[1] - 1):
+            self.verify_object([pos[0], pos[1] - 1])
             self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0], pos[1] - 1])
             self.mac.move([pos[0], pos[1] - 1])
 
         self.display()
+        print(self.mac.show_bag())
 
+    def verify_object(self, position):
+        if self.map[position[0]][position[1]] != " " and self.map[position[0]][position[1]] != "x":
+            self.mac.pick_item(self.map[position[0]][position[1]])
 
     def move_sprite(self, name, before, after):
         self.map[before[0]][before[1]] = " "
