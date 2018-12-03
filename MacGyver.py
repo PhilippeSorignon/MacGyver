@@ -7,8 +7,9 @@ class MacGyver(Objects):
         Objects.__init__(self, name, position)
 
 
-    def move(self, direction):
-        pass
+    def move(self, position):
+        self.position = position
+
 
     def is_bag_full(self):
         pass

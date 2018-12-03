@@ -5,7 +5,7 @@ class Objects:
         self.position = position
 
     def what_are_you(self):
-        pass
+        return self.name
 
     def get_name(self):
         return self.name
