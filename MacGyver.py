@@ -1,12 +1,15 @@
-from Objects import *
-
-
-class MacGyver(Objects):
+class MacGyver:
 
     def __init__(self, name, position):
-        Objects.__init__(self, name, position)
+        self.name = name
+        self.position = position
         self.bag = ["", "", ""]
 
+    def get_position(self):
+        return self.position
+
+    def get_name(self):
+        return self.name
 
     def move(self, position):
         self.position = position
