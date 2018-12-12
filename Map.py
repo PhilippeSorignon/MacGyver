@@ -57,6 +57,9 @@ class Map:
                 elif self.map[line][column] == "t":
                     object = 6
 
+                if object > 1:
+                    self.fenetre.blit(self.sprites[0], (column*40,line*40))
+
                 self.fenetre.blit(self.sprites[object], (column*40,line*40))
             pygame.display.flip()
 
@@ -102,7 +105,7 @@ class Map:
             print(self.mac.show_bag())
 
     def verify_object(self, position):
-        if self.map[position[0]][position[1]] != " " and self.map[position[0]][position[1]] != "x":
+        if self.map[position[0]][position[1]] != " " and self.map[position[0]][position[1]] != "x" and self.map[position[0]][position[1]] != "M":
             if self.map[position[0]][position[1]] != "G":
                 self.mac.pick_item(self.map[position[0]][position[1]])
             else:
