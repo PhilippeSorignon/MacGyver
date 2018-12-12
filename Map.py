@@ -1,5 +1,7 @@
 import random
 from MacGyver import *
+import pygame
+from pygame.locals import *
 
 
 class Map:
@@ -20,24 +22,43 @@ class Map:
 
         # self.needle = Objects("n", self.select_random_empty_sprite())
         needle = self.select_random_empty_sprite()
-        tube = self.select_random_empty_sprite()
-        ether = self.select_random_empty_sprite()
-        guard = self.select_random_empty_sprite()
         self.move_sprite("n", needle, needle)
+        tube = self.select_random_empty_sprite()
         self.move_sprite("t", tube, tube)
+        ether = self.select_random_empty_sprite()
         self.move_sprite("e", ether, ether)
+        guard = self.select_random_empty_sprite()
         self.move_sprite("G", guard, guard)
 
         map_file.close()
 
+        pygame.init()
+        self.fenetre = pygame.display.set_mode((600, 600))
+        self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(), pygame.image.load("ressource/wall.png").convert_alpha(), pygame.image.load("ressource/player.png").convert_alpha(), pygame.image.load("ressource/guardian.png").convert_alpha(), pygame.image.load("ressource/ether.png").convert_alpha(), pygame.image.load("ressource/needle.png").convert_alpha(), pygame.image.load("ressource/tube.png").convert_alpha()]
+
         self.display()
 
     def display(self):
+        object = 0
         for line in range(0, 15):
-            line_tab = ""
             for column in range(0, 15):
-                line_tab += self.map[line][column]
-            print(line_tab)
+                if self.map[line][column] == " ":
+                    object = 0
+                elif self.map[line][column] == "x":
+                    object = 1
+                elif self.map[line][column] == "M":
+                    object = 2
+                elif self.map[line][column] == "G":
+                    object = 3
+                elif self.map[line][column] == "e":
+                    object = 4
+                elif self.map[line][column] == "n":
+                    object = 5
+                elif self.map[line][column] == "t":
+                    object = 6
+
+                self.fenetre.blit(self.sprites[object], (column*40,line*40))
+            pygame.display.flip()
 
     def get_game(self):
         return self.game
@@ -55,28 +76,26 @@ class Map:
 
         return [line, column]
 
-    def move_player(self, direction):
+    def move_player(self, event):
         pos = self.mac.get_position()
+        x = 0
+        y = 0
 
-        if direction == "n" and pos[0] - 1 >= 0 and self.is_empty(pos[0] - 1, pos[1]):
-            self.verify_object([pos[0] - 1, pos[1]])
-            self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] - 1, pos[1]])
-            self.mac.move([pos[0] - 1, pos[1]])
+        if event.type == KEYDOWN and event.key == K_UP and pos[0] - 1 >= 0 and self.is_empty(pos[0] - 1, pos[1]):
+            x = -1
 
-        elif direction == "s" and pos[0] + 1 >= 0 and self.is_empty(pos[0] + 1, pos[1]):
-            self.verify_object([pos[0] + 1, pos[1]])
-            self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] + 1, pos[1]])
-            self.mac.move([pos[0] + 1, pos[1]])
+        elif event.type == KEYDOWN and event.key == K_DOWN and pos[0] + 1 >= 0 and self.is_empty(pos[0] + 1, pos[1]):
+            x = 1
 
-        elif direction == "e" and pos[1] + 1 >= 0 and self.is_empty(pos[0], pos[1] + 1):
-            self.verify_object([pos[0], pos[1] + 1])
-            self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0], pos[1] + 1])
-            self.mac.move([pos[0], pos[1] + 1])
+        elif event.type == KEYDOWN and event.key == K_RIGHT and pos[1] + 1 >= 0 and self.is_empty(pos[0], pos[1] + 1):
+            y = 1
 
-        elif direction == "o" and pos[1] - 1 >= 0 and self.is_empty(pos[0], pos[1] - 1):
-            self.verify_object([pos[0], pos[1] - 1])
-            self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0], pos[1] - 1])
-            self.mac.move([pos[0], pos[1] - 1])
+        elif event.type == KEYDOWN and event.key == K_LEFT and pos[1] - 1 >= 0 and self.is_empty(pos[0], pos[1] - 1):
+            y = -1
+
+        self.verify_object([pos[0] + x, pos[1] + y])
+        self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] + x, pos[1] + y])
+        self.mac.move([pos[0] + x, pos[1] + y])
 
         if self.game:
             self.display()
