@@ -2,6 +2,7 @@ import random
 from MacGyver import *
 import pygame
 from pygame.locals import *
+import time
 
 
 class Map:
@@ -99,9 +100,13 @@ class Map:
                 self.mac.pick_item(self.map[position[0]][position[1]])
             else:
                 if self.mac.is_bag_full():
-                    print("Gagné !")
+                    self.fenetre.blit(pygame.image.load("ressource/win.png").convert_alpha(), (0,0))
+                    pygame.display.flip()
+                    time.sleep(5)
                 else:
-                    print("Perdu :(")
+                    self.fenetre.blit(pygame.image.load("ressource/lost.png").convert_alpha(), (0,0))
+                    pygame.display.flip()
+                    time.sleep(5)
                 self.game = False
 
     def move_sprite(self, name, before, after):
