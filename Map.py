@@ -14,21 +14,21 @@ class Map:
         for read_line in lines:
             tab = []
             for i in range(0, 15):
-                tab.append(read_line[i])
+                tab.append(int(read_line[i]))
             self.map.append(tab)
 
-        self.mac = MacGyver("M", self.select_random_empty_sprite())
+        self.mac = MacGyver(2, self.select_random_empty_sprite())
         self.move_sprite(self.mac.get_name(), self.mac.get_position(), self.mac.get_position())
 
         # self.needle = Objects("n", self.select_random_empty_sprite())
         needle = self.select_random_empty_sprite()
-        self.move_sprite("n", needle, needle)
+        self.move_sprite(5, needle, needle)
         tube = self.select_random_empty_sprite()
-        self.move_sprite("t", tube, tube)
+        self.move_sprite(6, tube, tube)
         ether = self.select_random_empty_sprite()
-        self.move_sprite("e", ether, ether)
+        self.move_sprite(4, ether, ether)
         guard = self.select_random_empty_sprite()
-        self.move_sprite("G", guard, guard)
+        self.move_sprite(3, guard, guard)
 
         map_file.close()
 
@@ -42,24 +42,9 @@ class Map:
         object = 0
         for line in range(0, 15):
             for column in range(0, 15):
-                if self.map[line][column] == " ":
-                    object = 0
-                elif self.map[line][column] == "x":
-                    object = 1
-                elif self.map[line][column] == "M":
-                    object = 2
-                elif self.map[line][column] == "G":
-                    object = 3
-                elif self.map[line][column] == "e":
-                    object = 4
-                elif self.map[line][column] == "n":
-                    object = 5
-                elif self.map[line][column] == "t":
-                    object = 6
-
+                object = int(self.map[line][column])
                 if object > 1:
                     self.fenetre.blit(self.sprites[0], (column*40,line*40))
-
                 self.fenetre.blit(self.sprites[object], (column*40,line*40))
             pygame.display.flip()
 
@@ -67,13 +52,13 @@ class Map:
         return self.game
 
     def is_empty(self, line, column):
-        return self.map[line][column] != "x"
+        return self.map[line][column] != 1
 
     def select_random_empty_sprite(self):
         line = 0
         column = 0
 
-        while self.map[line][column] == "x":
+        while self.map[line][column] == 1:
             line = random.randint(0, 14)
             column = random.randint(0, 14)
 
@@ -105,8 +90,8 @@ class Map:
             print(self.mac.show_bag())
 
     def verify_object(self, position):
-        if self.map[position[0]][position[1]] != " " and self.map[position[0]][position[1]] != "x" and self.map[position[0]][position[1]] != "M":
-            if self.map[position[0]][position[1]] != "G":
+        if self.map[position[0]][position[1]] != 0 and self.map[position[0]][position[1]] != 1 and self.map[position[0]][position[1]] != 2:
+            if self.map[position[0]][position[1]] != 3:
                 self.mac.pick_item(self.map[position[0]][position[1]])
             else:
                 if self.mac.is_bag_full():
@@ -116,5 +101,5 @@ class Map:
                 self.game = False
 
     def move_sprite(self, name, before, after):
-        self.map[before[0]][before[1]] = " "
+        self.map[before[0]][before[1]] = 0
         self.map[after[0]][after[1]] = name
