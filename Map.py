@@ -33,7 +33,7 @@ class Map:
         map_file.close()
 
         pygame.init()
-        self.fenetre = pygame.display.set_mode((600, 600))
+        self.fenetre = pygame.display.set_mode((600, 640))
         self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(), pygame.image.load("ressource/wall.png").convert_alpha(), pygame.image.load("ressource/player.png").convert_alpha(), pygame.image.load("ressource/guardian.png").convert_alpha(), pygame.image.load("ressource/ether.png").convert_alpha(), pygame.image.load("ressource/needle.png").convert_alpha(), pygame.image.load("ressource/tube.png").convert_alpha()]
 
         self.display()
@@ -46,6 +46,10 @@ class Map:
                 if object > 1:
                     self.fenetre.blit(self.sprites[0], (column*40,line*40))
                 self.fenetre.blit(self.sprites[object], (column*40,line*40))
+
+            bag = self.mac.show_bag()
+            for i in range(3):
+                self.fenetre.blit(self.sprites[bag[i]], (i*40+250, 600))
             pygame.display.flip()
 
     def get_game(self):
@@ -87,7 +91,7 @@ class Map:
 
         if self.game:
             self.display()
-            print(self.mac.show_bag())
+
 
     def verify_object(self, position):
         if self.map[position[0]][position[1]] != 0 and self.map[position[0]][position[1]] != 1 and self.map[position[0]][position[1]] != 2:

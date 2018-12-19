@@ -3,7 +3,7 @@ class MacGyver:
     def __init__(self, name, position):
         self.name = name
         self.position = position
-        self.bag = ["", "", ""]
+        self.bag = [1, 1, 1]
 
     def get_position(self):
         return self.position
@@ -16,12 +16,12 @@ class MacGyver:
 
 
     def is_bag_full(self):
-        return self.bag[2] != ""
+        return self.bag[2] != 1
 
 
     def pick_item(self, item):
         for i in range(0, 3):
-            if self.bag[i] == "":
+            if self.bag[i] == 1:
                 self.bag[i] = item
                 break
 
