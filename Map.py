@@ -9,6 +9,19 @@ class Map:
     def __init__(self):
         self.map = []
         self.game = True
+
+        self.read_file()
+
+        self.init_objects()
+
+        pygame.init()
+        self.fenetre = pygame.display.set_mode((600, 640))
+        self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(), pygame.image.load("ressource/wall.png").convert_alpha(), pygame.image.load("ressource/player.png").convert_alpha(), pygame.image.load("ressource/guardian.png").convert_alpha(), pygame.image.load("ressource/ether.png").convert_alpha(), pygame.image.load("ressource/needle.png").convert_alpha(), pygame.image.load("ressource/tube.png").convert_alpha()]
+
+        self.display()
+
+
+    def read_file(self):
         map_file = open("map.txt", "r")
         lines = map_file.readlines()
 
@@ -18,10 +31,12 @@ class Map:
                 tab.append(int(read_line[i]))
             self.map.append(tab)
 
+        map_file.close()
+
+
+    def init_objects(self):
         self.mac = MacGyver(2, self.select_random_empty_sprite())
         self.move_sprite(self.mac.get_name(), self.mac.get_position(), self.mac.get_position())
-
-        # self.needle = Objects("n", self.select_random_empty_sprite())
         needle = self.select_random_empty_sprite()
         self.move_sprite(5, needle, needle)
         tube = self.select_random_empty_sprite()
@@ -31,13 +46,6 @@ class Map:
         guard = self.select_random_empty_sprite()
         self.move_sprite(3, guard, guard)
 
-        map_file.close()
-
-        pygame.init()
-        self.fenetre = pygame.display.set_mode((600, 640))
-        self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(), pygame.image.load("ressource/wall.png").convert_alpha(), pygame.image.load("ressource/player.png").convert_alpha(), pygame.image.load("ressource/guardian.png").convert_alpha(), pygame.image.load("ressource/ether.png").convert_alpha(), pygame.image.load("ressource/needle.png").convert_alpha(), pygame.image.load("ressource/tube.png").convert_alpha()]
-
-        self.display()
 
     def display(self):
         object = 0
