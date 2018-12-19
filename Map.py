@@ -3,6 +3,7 @@ from MacGyver import *
 import pygame
 from pygame.locals import *
 import time
+import const
 
 
 class Map:
@@ -15,7 +16,7 @@ class Map:
         self.init_objects()
 
         pygame.init()
-        self.fenetre = pygame.display.set_mode((600, 640))
+        self.fenetre = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
         self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(), pygame.image.load("ressource/wall.png").convert_alpha(), pygame.image.load("ressource/player.png").convert_alpha(), pygame.image.load("ressource/guardian.png").convert_alpha(), pygame.image.load("ressource/ether.png").convert_alpha(), pygame.image.load("ressource/needle.png").convert_alpha(), pygame.image.load("ressource/tube.png").convert_alpha()]
 
         self.display()
@@ -27,7 +28,7 @@ class Map:
 
         for read_line in lines:
             tab = []
-            for i in range(0, 15):
+            for i in range(0, const.SPRITES):
                 tab.append(int(read_line[i]))
             self.map.append(tab)
 
@@ -49,16 +50,16 @@ class Map:
 
     def display(self):
         object = 0
-        for line in range(0, 15):
-            for column in range(0, 15):
+        for line in range(0, const.SPRITES):
+            for column in range(0, const.SPRITES):
                 object = int(self.map[line][column])
                 if object > 1:
-                    self.fenetre.blit(self.sprites[0], (column*40,line*40))
-                self.fenetre.blit(self.sprites[object], (column*40,line*40))
+                    self.fenetre.blit(self.sprites[0], (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
+                self.fenetre.blit(self.sprites[object], (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
 
             bag = self.mac.show_bag()
             for i in range(3):
-                self.fenetre.blit(self.sprites[bag[i]], (i*40+250, 600))
+                self.fenetre.blit(self.sprites[bag[i]], (i*const.SPRITE_WIDTH+250, const.WIDTH))
             pygame.display.flip()
 
     def get_game(self):
@@ -72,8 +73,8 @@ class Map:
         column = 0
 
         while self.map[line][column] == 1:
-            line = random.randint(0, 14)
-            column = random.randint(0, 14)
+            line = random.randint(0, const.SPRITES - 1)
+            column = random.randint(0, const.SPRITES - 1)
 
         return [line, column]
 
