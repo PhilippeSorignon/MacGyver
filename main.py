@@ -1,9 +1,9 @@
-from Map import *
+import Map
 import pygame
 
 
-map = Map()
+MAP = Map.Map()
 
-while map.get_game():
+while MAP.get_game():
     for event in pygame.event.get():
-        map.move_player(event)
+        MAP.move_player(event)
