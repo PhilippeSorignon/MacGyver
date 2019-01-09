@@ -1,8 +1,9 @@
 import random
 import time
 
-import MacGyver
 import pygame
+
+import MacGyver
 import const
 
 
@@ -149,7 +150,7 @@ class Map:
         """
             Verify the object
 
-            If the object us the guard, verify if the player won or lost
+            If the object is the guard, verify if the player won or lost
         """
         if self.map[position[0]][position[1]] != 0\
             and self.map[position[0]][position[1]] != 1 and self.map[position[0]][position[1]] != 2:

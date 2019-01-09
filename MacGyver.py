@@ -31,7 +31,7 @@ class MacGyver:
 
     def is_bag_full(self):
         """
-            Return if the bag is full or not
+            Return true if the bag is full or false if it's not
         """
         return self.bag[2] != 1
 
