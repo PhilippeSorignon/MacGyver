@@ -7,7 +7,7 @@ import time
 
 import pygame
 
-import MacGyver
+import macgyver
 import const
 
 
@@ -59,7 +59,7 @@ class Map:
         """
             Initialise the objects
         """
-        self.mac = MacGyver.MacGyver(2, self.select_random_empty_sprite())
+        self.mac = macgyver.MacGyver(2, self.select_random_empty_sprite())
         self.move_sprite(self.mac.get_name(), self.mac.get_position(), self.mac.get_position())
         needle = self.select_random_empty_sprite()
         self.move_sprite(5, needle, needle)

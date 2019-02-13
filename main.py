@@ -4,9 +4,9 @@
 
 import pygame
 
-import Map
+import map
 
-MAP = Map.Map()
+MAP = map.Map()
 
 while MAP.get_game():
     for event in pygame.event.get():
