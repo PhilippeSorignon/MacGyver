@@ -1,3 +1,7 @@
+"""
+    map.py
+"""
+
 import random
 import time
 
@@ -23,7 +27,7 @@ class Map:
         self.init_objects()
 
         pygame.init()
-        self.fenetre = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
+        self.window = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
         self.sprites = [pygame.image.load("ressource/floor.png").convert_alpha(),
                         pygame.image.load("ressource/wall.png").convert_alpha(),
                         pygame.image.load("ressource/player.png").convert_alpha(),
@@ -74,15 +78,15 @@ class Map:
         for line in range(0, const.SPRITES):
             for column in range(0, const.SPRITES):
                 if self.map[line][column] > 1:
-                    self.fenetre.blit(self.sprites[0],
-                                      (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
+                    self.window.blit(self.sprites[0],
+                                     (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
 
-                self.fenetre.blit(self.sprites[self.map[line][column]],
-                                  (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
+                self.window.blit(self.sprites[self.map[line][column]],
+                                 (column*const.SPRITE_WIDTH, line*const.SPRITE_WIDTH))
 
             bag = self.mac.show_bag()
             for i in range(3):
-                self.fenetre.blit(self.sprites[bag[i]], (i*const.SPRITE_WIDTH+250, const.WIDTH))
+                self.window.blit(self.sprites[bag[i]], (i*const.SPRITE_WIDTH+250, const.WIDTH))
             pygame.display.flip()
 
     def get_game(self):
@@ -115,32 +119,33 @@ class Map:
             Read the key pressed and move the player
         """
         pos = self.mac.get_position()
-        x = 0
-        y = 0
+        pos_x = 0
+        pos_y = 0
 
         if event.type == pygame.KEYDOWN\
             and event.key == pygame.K_UP\
             and pos[0] - 1 >= 0 and self.is_empty(pos[0] - 1, pos[1]):
-            x = -1
+            pos_x = -1
 
         elif event.type == pygame.KEYDOWN\
             and event.key == pygame.K_DOWN\
             and pos[0] + 1 < 15 and self.is_empty(pos[0] + 1, pos[1]):
-            x = 1
+            pos_x = 1
 
         elif event.type == pygame.KEYDOWN\
             and event.key == pygame.K_RIGHT\
             and pos[1] + 1 < 15 and self.is_empty(pos[0], pos[1] + 1):
-            y = 1
+            pos_y = 1
 
         elif event.type == pygame.KEYDOWN\
             and event.key == pygame.K_LEFT\
             and pos[1] - 1 >= 0 and self.is_empty(pos[0], pos[1] - 1):
-            y = -1
+            pos_y = -1
 
-        self.verify_object([pos[0] + x, pos[1] + y])
-        self.move_sprite(self.mac.get_name(), self.mac.get_position(), [pos[0] + x, pos[1] + y])
-        self.mac.move([pos[0] + x, pos[1] + y])
+        self.verify_object([pos[0] + pos_x, pos[1] + pos_y])
+        self.move_sprite(self.mac.get_name(), self.mac.get_position(),
+                         [pos[0] + pos_x, pos[1] + pos_y])
+        self.mac.move([pos[0] + pos_x, pos[1] + pos_y])
 
         if self.game:
             self.display()
@@ -158,13 +163,13 @@ class Map:
                 self.mac.pick_item(self.map[position[0]][position[1]])
             else:
                 if self.mac.is_bag_full():
-                    self.fenetre.blit(pygame.image.load("ressource/win.png").convert_alpha(),
-                                      (0, 0))
+                    self.window.blit(pygame.image.load("ressource/win.png").convert_alpha(),
+                                     (0, 0))
                     pygame.display.flip()
                     time.sleep(5)
                 else:
-                    self.fenetre.blit(pygame.image
-                                      .load("ressource/lost.png").convert_alpha(), (0, 0))
+                    self.window.blit(pygame.image
+                                     .load("ressource/lost.png").convert_alpha(), (0, 0))
                     pygame.display.flip()
                     time.sleep(5)
                 self.game = False

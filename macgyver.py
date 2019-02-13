@@ -1,3 +1,7 @@
+"""
+    macgyver.py
+"""
+
 class MacGyver:
     """
         Contains all informations and usefull classes about the player

@@ -1,7 +1,10 @@
+"""
+    Main file
+"""
+
 import pygame
 
 import Map
-
 
 MAP = Map.Map()
 
